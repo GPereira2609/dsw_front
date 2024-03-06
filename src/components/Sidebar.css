@@ -1,0 +1,88 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+li {
+    list-style: none;
+}
+
+body {
+    background-color: #030637;
+    color: white;
+}
+
+.sidebar {
+    width: 30%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.05);
+    padding: 2rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    position: relative;
+    transition: 0.2s ease-in-out;
+    align-items: center;
+    justify-content: center;
+}
+
+.sidebarToogle {
+    position: absolute;
+    right: -50px;
+    height: 50px;
+    width: 50px;
+    background-color: rgba(255, 255, 255, 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    cursor: pointer;
+    border-top-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.logo {
+    display: flex;
+    width: 20%;
+    gap: 10px;
+    column-rule: rgba(255, 255, 255, 0.9);
+    cursor: pointer;
+}
+
+.input-container {
+    background-color: rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    overflow: hidden;
+    width: 100%;
+}
+
+.sidebar ul{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 1.1rem;
+}
+
+.sidebar ul li{
+    cursor: pointer;
+}
+
+.sidebar ul li:hover{
+    color: white;
+}
+
+.bottom {
+    width: 100%;
+    text-align: center;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: rgba(255, 255, 255, 0.5)
+}
+
+.App {
+    height: 100dvh;
+}
