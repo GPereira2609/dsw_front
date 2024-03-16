@@ -1,6 +1,7 @@
 import { MoreVertical, ChevronLast, ChevronFirst } from "lucide-react"
 import { useContext, createContext, useState, useEffect } from "react"
 import logo from '../assets/logo1.png';
+import logut from '../assets/logout.png';
 import api from "../service/ApiService";
 import { getToken, logout } from "../service/AuthService";
 import { jwtDecode } from "jwt-decode";
@@ -68,9 +69,6 @@ export default function Sidebar({ children }) {
         <div className="p-4 pb-2 flex flex-col justify-center items-center">
           <ul>
             <li>
-              <a href="/" className="text-white text-bold">Home</a>
-            </li>
-            <li>
               <a href="/clientes" className="text-white text-bold">Clientes</a>
             </li>
             {(role==="ESTAGIARIO" || role==="ADVOGADO") && (
@@ -102,7 +100,7 @@ export default function Sidebar({ children }) {
               <h4 className="font-semibold text-white">{name}</h4>
               <span className="text-xs text-gray-600 text-white">{email}</span>
             </div>
-            {<button onClick={handleLogout}>< CiLogout /></button>}
+            {<button onClick={handleLogout}><img src={logut} alt=""/></button>}
           </div>
         </div>
       </nav>
