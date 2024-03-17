@@ -2,10 +2,24 @@ import React, { useState, useEffect } from 'react'
 import Sidebar from '../components/Sidebar'
 import api from '../service/ApiService';
 import DataTable from 'react-data-table-component';
+import { Navigate } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
+import { getToken } from '../service/AuthService';
 
 function TiposProcesso() {
   const [dados, setDados] = useState();
   const [nomeFiltro, setNomeFiltro] = useState("");
+  const [role, setRole] = useState();
+  const user = jwtDecode(getToken())["sub"];
+
+  useEffect(() => {
+    const response = api.get("/auth/user_details/" + user)
+      .then((res) => {
+        setRole(res.data["role"]);
+      })
+      .catch((err) => console.log(err))
+
+  }, [])
 
   const colunas = [
     {name: "Nome", selector: row => row.nome},
@@ -23,6 +37,8 @@ function TiposProcesso() {
         .catch((err) => console.log(err))
     }
   }, [nomeFiltro])
+
+  console.log(role)
 
   return (
     <div className='h-screen flex'>

@@ -1,8 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Sidebar from '../components/Sidebar'
 import { toast, ToastContainer } from 'react-toastify'
 import api from '../service/ApiService';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Navigate } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
+import { getToken } from '../service/AuthService';
 
 interface TipoProcessoForm {
     nome: string,
@@ -13,6 +15,16 @@ function NovoTipoProcesso() {
     const [nome, setNome] = useState("");
     const [descricao, setDescricao] = useState("");
     const navigate = useNavigate();
+    const [role, setRole] = useState();
+    const user = jwtDecode(getToken())["sub"];
+
+  useEffect(() => {
+    const response = api.get("/auth/user_details/" + user)
+      .then((res) => {
+        setRole(res.data["role"]);
+      })
+      .catch((err) => console.log(err))
+  }, [])
 
     const handleSave = (e) => {
         e.preventDefault();

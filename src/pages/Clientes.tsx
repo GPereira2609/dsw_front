@@ -2,10 +2,30 @@ import React, { useState, useEffect } from 'react';
 import Sidebar from '../components/Sidebar';
 import api from '../service/ApiService';
 import DataTable from 'react-data-table-component';
+import { jwtDecode } from 'jwt-decode';
+import { getToken } from '../service/AuthService';
 
 function Clientes() {
     const [dados, setDados] = useState();
     const [nome, setNome] = useState("");
+    const [role, setRole] = useState();
+    const user = jwtDecode(getToken())["sub"];
+
+    const formatarCPF = (cpf: string) => {
+        cpf = cpf.replace(/\D/g, '');
+        return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, (_, p1, p2, p3, p4) => `${p1}.${'*'.repeat(3)}.${'*'.repeat(3)}-${p4}`);  
+      } 
+
+  useEffect(() => {
+    const response = api.get("/auth/user_details/" + user)
+      .then((res) => {
+        setRole(res.data["role"]);
+      })
+      .catch((err) => console.log(err))
+
+  }, [])
+
+  console.log(role)
 
     useEffect(() => {
         if(nome==="") {
@@ -26,7 +46,7 @@ function Clientes() {
     console.log(dados)
 
     const colunas = [
-        {name: "CPF", selector: row => row.cpf},
+        {name: "CPF", selector: row => formatarCPF(row.cpf)},
         {name: "Nome", selector: row => row.nome},
         {name: "Email", selector: row => row.email},
         {name: "Telefone", selector: row => row.telefone},

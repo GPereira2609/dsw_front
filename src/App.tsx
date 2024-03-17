@@ -19,7 +19,7 @@ import NovoProcesso from './pages/NovoProcesso';
 function App() {
   const [isLogged, setIsLogged] = useState(isAuthenticated);
 
-  // logout()
+  console.log()
 
   const routes = createBrowserRouter([
     {path:"/", element: isLogged ? <Navigate to="/clientes" replace={true} /> : <Navigate to="/login" replace={true} /> },

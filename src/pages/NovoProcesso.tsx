@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react'
 import Sidebar from '../components/Sidebar'
 import api from '../service/ApiService';
 import 'react-dropdown/style.css';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Navigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css"
+import { jwtDecode } from 'jwt-decode';
+import { getToken } from '../service/AuthService';
 
 interface Processo {
   dataInicio: string | null,
@@ -30,6 +32,17 @@ function NovoProcesso() {
   const [status, setStatus] = useState("");
 
   const navigate = useNavigate();
+  const [role, setRole] = useState();
+  const user = jwtDecode(getToken())["sub"];
+
+  useEffect(() => {
+    const response = api.get("/auth/user_details/" + user)
+      .then((res) => {
+        setRole(res.data["role"]);
+      })
+      .catch((err) => console.log(err))
+  }, [])
+
 
   useEffect(()=>{
     const response = api.get("/clientes/cpf")
@@ -76,6 +89,11 @@ function NovoProcesso() {
       toast.error("Não foi possível salvar o processo")
     }
   }
+
+  const formatarCPF = (cpf: string) => {
+    cpf = cpf.replace(/\D/g, '');
+    return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, (_, p1, p2, p3, p4) => `${p1}.${'*'.repeat(3)}.${'*'.repeat(3)}-${p4}`);  
+  } 
 
   console.log(dataInicio)
   console.log(dataFim)
@@ -129,7 +147,7 @@ function NovoProcesso() {
                 <select value={selectedOption} className='w-full p-2 border border-gray-300 rounded bg-gray-100' onChange={(e) => setSelectedOption(e.target.value)}>
                   <option value="">Selecione um CPF</option>
                   {cpfList?.map(cpf => (
-                    <option value={cpf}>{cpf}</option>
+                    <option value={cpf}>{formatarCPF(cpf)}</option>
                   ))}
                 </select>
             </div>
